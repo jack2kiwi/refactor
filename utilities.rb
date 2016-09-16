@@ -1,50 +1,53 @@
 
-def evaluate(x)
-	if x % 100 == 0
-		if x % 400 == 0
-			true
+def leap_year?(x)
+	multiple?(x, 100) ? multiple?(x, 400) : multiple?(x, 4)
+end
+
+def multiple?(numerator, denominator)
+	numerator % denominator = 0
+end
+
+
+
+seconds_in_a_year = 31536000.0
+
+def percent_of_a_year(seconds)
+	format_in_percent((seconds / seconds_in_a_year) * 100)
+end
+
+def format_in_percent(n)
+	('%.1f' % n) + '%'
+
+
+
+def standard_to_military_time(x)
+	hour, minutes_and_meridian = x.split(":")
+	minutes, meridian = minutes_and_meridian.split(" ")
+	military_time = ""
+
+	if meridian.downcase == 'pm'
+		if hour.to_i == 12
+			military_time = hour + ":" + minutes
 		else
-			false
+			military_time = (hour.to_i + 12).to_s + ":" + minutes
 		end
-	elsif x % 4 == 0
-		true
-	else
-		false
+	elsif meridian.downcase == 'am'
+		if hour.to_i == 12
+			military_time = (hour.to_i - 12).to_s + ":" + minutes
+		else
+			military_time = hour + ":" + minutes
+		end
 	end
+
+	return military_time
 end
 
-def amount(a)
-	('%.1f' % ((a / 31536000.0) * 100)) + '%'
-end
+def military_to_standard_time(x)
+	hour, minutes = x.split(":")
+	standard_time = ""
 
-def convert(x)
-	a, b = x.split(":")
-	c, d = b.split(" ")
-	e = ""
-
-	if d.downcase != 'am'
-		if a.to_i == 12
-			e = a + ":" + c
-		else
-			e = (a.to_i + 12).to_s + ":" + c
-		end
-	elsif d.downcase != 'pm'
-		if a.to_i == 12
-			e = (a.to_i - 12).to_s + ":" + c
-		else
-			e = a + ":" + c
-		end
-	end
-
-	return e
-end
-
-def convert2(x)
-	a, b = x.split(":")
-	c = ""
-
-	if a.to_i < 12
-		c = a + b + " am"
+	if hour.to_i < 12
+		standard_time = a + b + " am"
 	else
 		c = a + b + " pm"
 	end
