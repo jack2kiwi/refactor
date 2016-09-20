@@ -1,23 +1,16 @@
 
 def leap_year?(x)
-	multiple?(x, 100) ? multiple?(x, 400) : multiple?(x, 4)
+	x % 100 == 0 ? x % 400 == 0 : x % 4 == 0
 end
-
-def multiple?(numerator, denominator)
-	numerator % denominator = 0
-end
-
-
-
-seconds_in_a_year = 31536000.0
 
 def percent_of_a_year(seconds)
+	seconds_in_a_year = 31536000.0
 	format_in_percent((seconds / seconds_in_a_year) * 100)
 end
 
 def format_in_percent(n)
 	('%.1f' % n) + '%'
-
+end
 
 
 def standard_to_military_time(x)
@@ -45,24 +38,26 @@ end
 def military_to_standard_time(x)
 	hour, minutes = x.split(":")
 	standard_time = ""
+	hour = hour.to_i
 
-	if hour.to_i < 12
-		standard_time = a + b + " am"
+	if hour == 0
+		standard_time = (hour + 12).to_s + ':' + minutes + " am"
+	elsif hour > 12
+		standard_time = (hour - 12).to_s + ':' + minutes + " pm"
+	elsif hour == 12
+		standard_time = hour.to_s + ':' + minutes + " pm"
 	else
-		c = a + b + " pm"
+		standard_time = hour.to_s + ':' + minutes + " am"
 	end
 
-	return c
+	return standard_time
 end
 
-def okay(a, b)
-	c = false
-	if (a.split(":")[0].to_i >= 8 && b || a.split(":")[0].to_i >= 10 && !b) && a.split(":")[1].split(" ")[1] == 'pm'
-		c = false
-	else
-		c = true
-	end
-	return c
+def curfew?(time, is_weekday)
+	hour, minutes_and_meridian = time.split(":")
+	minutes, meridian = minutes_and_meridian.split(" ")
+  hour = hour.to_i
+  (is_weekday ? hour >= 8 : hour >= 10) || meridian == 'am'
 end
 
 def span(a, b)
